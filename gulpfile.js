@@ -12,27 +12,33 @@ const del = require('del')
 const htmlmin = require('gulp-htmlmin')
 const size = require('gulp-size')
 const newer = require('gulp-newer')
-const browserSync = require('browser-sync').create();
+const browserSync = require('browser-sync').create()
+const ttf2woff2 = require('gulp-ttf2woff2')
+const ttf2woff = require('gulp-ttf2woff')
 
 
 const paths = {
     html: {
-        src: 'src/*.html',
-        dest: 'dist',
-    },
-    styles: {
-        src: ['src/scss/**/*.scss', 'src/scss/**/*.sass'],
-        dest: 'dist/scss/',
-    },
-    scripts: {
-        src: 'src/js/**/*.js',
-        dest: 'dist/js/',
-    },
-    images: {
-        src: 'src/img/**',
-        dest: 'dist/img',
-    },
+        src: 'src/*.html', dest: 'dist',
+    }, styles: {
+        src: ['src/scss/**/*.scss', 'src/scss/**/*.sass'], dest: 'dist/scss/',
+    }, scripts: {
+        src: 'src/js/**/*.js', dest: 'dist/js/',
+    }, images: {
+        src: 'src/img/**', dest: 'dist/img/',
+    }, fonts: {
+        src: 'src/fonts/**.ttf', dest: 'dist/fonts/',
+    }
+}
 
+function fonts(done) {
+    gulp.src(paths.fonts.src)
+        .pipe(ttf2woff())
+        .pipe(gulp.dest(paths.fonts.dest))
+    gulp.src(paths.fonts.src)
+        .pipe(ttf2woff2())
+        .pipe(gulp.dest(paths.fonts.dest))
+    done()
 }
 
 function scripts() {
@@ -93,7 +99,6 @@ function styles() {
         .pipe(browserSync.stream());
 }
 
-
 function watch() {
     browserSync.init({
         server: "./dist/"
@@ -103,10 +108,11 @@ function watch() {
     gulp.watch(paths.styles.src, styles)
     gulp.watch(paths.scripts.src, scripts)
     gulp.watch(paths.images.src, img)
+    gulp.watch(paths.fonts.src, fonts)
 }
 
-const build = gulp.series(clean, html, gulp.parallel(styles, scripts, img), watch)
-
+const build = gulp.series(clean, html, gulp.parallel(styles, scripts, img, fonts), watch)
+exports.fonts = fonts
 exports.clean = clean
 exports.img = img
 exports.html = html
