@@ -6,3 +6,4 @@ SRC DIR
 <h2>/scss/</h2>
 
 
+# Lagoona-Adaptive
