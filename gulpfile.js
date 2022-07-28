@@ -19,9 +19,9 @@ const ttf2woff = require('gulp-ttf2woff')
 
 const paths = {
     html: {
-        src: 'src/*.html', dest: 'dist',
+        src: 'src/*.html', dest: 'dist/',
     }, styles: {
-        src: ['src/scss/**/*.scss', 'src/scss/**/*.sass'], dest: 'dist/scss/',
+        src: ['src/scss/**/*.scss', 'src/scss/**/*.sass'], dest: 'dist/css/',
     }, scripts: {
         src: 'src/js/**/*.js', dest: 'dist/js/',
     }, images: {
